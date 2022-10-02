@@ -30,6 +30,25 @@ team_id:
 ```
 python main.py
 ```
+* `data.db`が生成される
+```
+ls -lrta data.db
+-rw-r--r--  1 staff  staff  8192 Oct  2 14:34 data.db
+```
+
+## データを参照する
+SQLITE3のサイトを記述するが、3rdパーティのソフトウェアなどでも参照できる
+* sqlite3をインストール
+[sqlite3](https://www.sqlite.org/download.html)
+* sqlite3で開く
+```
+sqlite3 data.db
+```
+* 内容を確認
+```
+select * from figmadata;
+```
+
 
 ## LICENSE
 Apache License 2.0 \
