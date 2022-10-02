@@ -19,16 +19,21 @@ def loadTeams():
         teams = yaml.safe_load(file.read())
         return teams 
 
+def dropTable(con:sqlite3.Connection):
+    sql = "DROP TABLE IF EXISTS figmadata;"
+    con.execute(sql)
+    pass
 
 def createTable(con:sqlite3.Connection):
     sql = """CREATE TABLE IF NOT EXISTS figmadata (
         teamId INTEGER,
         projectId INTEGER,
         fileKey TEXT,
-        userId Integer,
+        userId INTEGER,
         handle TEXT,
         date DATETIME,
-        count INTEGER
+        count INTEGER,
+        PRIMARY KEY(teamId, projectId, fileKey, userId)
     )
     """ 
     con.execute(sql)
@@ -37,7 +42,7 @@ def createTable(con:sqlite3.Connection):
 
 def insertData(con:sqlite3.Connection, teamId:int, projectId:int, fileKey:str,userId:int,handle:str, date:str, count:int):
     data = (teamId, projectId, fileKey, userId, handle , date , count)
-    sql = "insert into figmadata values (?,?,?,?,?,?,?);"
+    sql = "replace into figmadata values (?,?,?,?,?,?,?);"
     con.execute(sql , data)
     con.commit()
     pass
@@ -114,6 +119,7 @@ def main():
 
     print("summaryData", summaryData)
     con = dbConnect()
+    dropTable(con)
     createTable(con)
     for value in summaryData:
         print(value)
